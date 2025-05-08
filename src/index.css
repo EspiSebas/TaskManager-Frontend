@@ -66,3 +66,19 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.loginAndRegister{
+  padding: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+}
+
+.styleFormRegisterAndLogin{
+  height: 30%;
+  
+  padding: 5%;
+  border: 2px solid  black;
+  border-radius: 5%;
+}

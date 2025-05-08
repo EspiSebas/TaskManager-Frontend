@@ -1,9 +1,14 @@
 import React from 'react'
+import { Table } from '../components/Table'
 
 export const Projects = () => {
-  return (
-    <div>
-        <h1>Projects</h1>
-    </div>
-  )
+   const urlTask = "http://localhost:3000/project"
+      const title = "Projects"
+    return (
+      <>
+      <div>
+          <Table url={urlTask} title={title}/>
+      </div>
+      </>
+    )
 }

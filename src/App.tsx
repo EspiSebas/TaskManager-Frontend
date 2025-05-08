@@ -1,12 +1,19 @@
 
-import { NavBar } from './components/navBar'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
-import { Profile } from './pages/profile';
 import { Projects } from './pages/Projects';
-import { Task } from './pages/task';
+import { useState } from 'react';
+import { Login } from './components/login';
+import { NavBar } from './components/NavBar';
+import { Profile } from './pages/Profile';
+import { Task } from './pages/Task';
+import { FormRegister } from './components/FormRegister';
+
 
 function App() {
+  const [user, setUser] = useState(null); // null means not logged in
+
+ 
   return (
     <Router>
       <div className="d-flex">
@@ -17,6 +24,7 @@ function App() {
             <Route path='/project' element={<Projects />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/task' element={<Task/>} />
+            <Route path='/formRegister/:type' element={<FormRegister/>}/>
             
           </Routes>
         </div>
