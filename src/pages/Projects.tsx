@@ -6,7 +6,7 @@ export const Projects = () => {
       const title = "Projects"
     return (
       <>
-      <div>
+      <div className="ms-md-5 ps-md-5">
           <Table url={urlTask} title={title}/>
       </div>
       </>

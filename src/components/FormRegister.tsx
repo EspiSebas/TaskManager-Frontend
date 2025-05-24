@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState,useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const taskForm = {
@@ -11,6 +11,9 @@ const taskForm = {
 
 }
 
+const projectForm = {
+  name:""
+}
 
 
 export const FormRegister = () => {
@@ -19,7 +22,7 @@ export const FormRegister = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dataDev, setDataDev] = useState([]);
-
+  const navigate = useNavigate();
 
   const url = (type === "task") ? "http://localhost:3000/task-manager" : "http://localhost:3000/project";
 
@@ -58,7 +61,7 @@ export const FormRegister = () => {
   }, []);
   
 
-  let initialForm = taskForm
+  let initialForm = type === 'task' ? taskForm : projectForm;
 
 
 
@@ -77,6 +80,11 @@ export const FormRegister = () => {
         alert('Please, send the information in the field');
         return;
       }
+    }else{
+      if (!form.name) {
+        alert('Please, send the information in the field');
+        return;
+      }
     }
 
 
@@ -87,6 +95,7 @@ export const FormRegister = () => {
       if (response.status === 201) {
   
         alert('Formulario enviado con éxito');
+        navigate(-1);
       } 
 
     } catch (error) {
@@ -101,7 +110,7 @@ export const FormRegister = () => {
 
 
   return (
-    <div className="loginAndRegister" >
+    <div className="mainContainer" >
       <div className="styleFormRegisterAndLogin">
         <h3>Add {type}</h3>
         <form onSubmit={handleSubmit}>
@@ -144,10 +153,7 @@ export const FormRegister = () => {
               </>
             ) : (
               <>
-                <div className="mb-3">
-                  <label htmlFor="text" className="form-label">Class Room:</label><br></br>
-                  <input type='text' name='class_room' placeholder='class_room' onChange={handleChange} value={form.class_room} />
-                </div>
+                
 
               </>
             )

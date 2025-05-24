@@ -43,6 +43,11 @@ export const Table = ({ url, title }) => {
         navigate(`/formRegister/${type}`);
     }
 
+    const updateOption = (type:any , item:any) => {
+        navigate(`/formUpdate/${type}`,{state: item});
+
+    }
+
 
 
     if (loading) return <div>Cargando...</div>;
@@ -50,11 +55,11 @@ export const Table = ({ url, title }) => {
     return (
         <>
             {
-                (title === 'Tasks') ? (<h1>Tasks</h1>) : (<h1>Projects</h1>)
+                (title === 'Tasks') ? (<h1 className='text-center'>Tasks</h1>) : (<h1 className='text-center'   >Projects</h1>)
 
             }
 
-            <div>
+            <div className='mainContainer'>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -101,6 +106,7 @@ export const Table = ({ url, title }) => {
                                         <td>
                                             <button className='btn btn-danger' onClick={() => deleteTaskOrProject(item.id)}>Delete</button>
                                             <button className='btn btn-warning' data-bs-toggle="modal" data-bs-target={`#item_${item.id}`}>See</button>
+                                            <button  key={item.id} className='btn btn-primary' onClick={()=>updateOption(title === "Tasks" ? "task" : "project",item)}>Edite</button>
                                         </td>
 
 
@@ -112,6 +118,9 @@ export const Table = ({ url, title }) => {
 
                     </tbody>
                 </table>
+                
+            </div>
+            <div className='mainContainer'>
                 <button className="btn btn-primary" onClick={()=>addRegister(title === "Tasks" ? "task" : "project")}>{title === "Tasks" ? "Add task" : "Add project"}</button>
             </div>
             <div>

@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { useState } from 'react';
-import { Login } from './components/login';
 import { NavBar } from './components/NavBar';
 import { Profile } from './pages/Profile';
 import { Task } from './pages/Task';
 import { FormRegister } from './components/FormRegister';
+import { FormUpdate } from './components/FormUpdate';
 
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/task' element={<Task/>} />
             <Route path='/formRegister/:type' element={<FormRegister/>}/>
-            
+            <Route path='/formUpdate/:type' element={<FormUpdate/>}/>
           </Routes>
         </div>
       </div>
