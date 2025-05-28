@@ -6,7 +6,6 @@ export const Task = () => {
   return (
     
     <div className="ms-md-5 ps-md-5">
-      
         <Table url={urlTask} title={title}/>
     </div>
   )

@@ -1,14 +1,28 @@
-import React from 'react'
+
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 export const Dashboard = () => {
-  const stats = [
-    { icon: '👷', label: 'Tareas activas', value: 12 },
-    { icon: '📁', label: 'Proyectos abiertos', value: 3 },
-    { icon: '✅', label: 'Tareas completadas hoy', value: 4 }
-  ];
+  const [stats, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+      fetch('http://localhost:3000/dashboard')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setData(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+  }, []);
 
   return (
-    <div className="container mt-5 d-flex justify-content-center">
+    <div className="container d-flex justify-content-center align-items-center vh-20">
       <div className="row justify-content-center w-100" style={{ maxWidth: '900px' }}>
         {stats.map((stat, index) => (
           <div className="col-10 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={index}>

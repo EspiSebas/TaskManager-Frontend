@@ -54,12 +54,11 @@ export const Table = ({ url, title }) => {
     if (error) return <div>Error: {error}</div>;
     return (
         <>
-            {
+            <div className='mainContainer'>
+                {
                 (title === 'Tasks') ? (<h1 className='text-center'>Tasks</h1>) : (<h1 className='text-center'   >Projects</h1>)
 
-            }
-
-            <div className='mainContainer'>
+                }
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -118,10 +117,9 @@ export const Table = ({ url, title }) => {
 
                     </tbody>
                 </table>
-                
-            </div>
-            <div className='mainContainer'>
-                <button className="btn btn-primary" onClick={()=>addRegister(title === "Tasks" ? "task" : "project")}>{title === "Tasks" ? "Add task" : "Add project"}</button>
+                 <div>
+                    <button className="btn btn-primary" onClick={()=>addRegister(title === "Tasks" ? "task" : "project")}>{title === "Tasks" ? "Add task" : "Add project"}</button>
+                </div>       
             </div>
             <div>
                 {

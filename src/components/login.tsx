@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username) {
