@@ -1,19 +1,46 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+export const Login = ({ setUser }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (username) {
-      onLogin(username);
+  const navigate = useNavigate()
+  const handleLogin = async () => {
+    try{
+      const response = await axios.post('http://localhost:3000/auth/login',{
+        email, 
+        password
+      })
+
+      const token = response.data;
+      localStorage.setItem('token', token);
+      navigate('/');
+      // Llamada para obtener perfil
+      const profileRes = await axios.get('http://localhost:3000/auth/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setUser(profileRes.data);
+    }catch(err){
+      console.log(err)
+      alert('Mistake to log in!!')
     }
   };
 
+
+  const handleSubmit = (e) => {
+     e.preventDefault();
+  }
+
     return (
-        <div className="d-flex align-items-center justify-content-center vh-100 ">
-          <div className="card p-5 shadow-lg " style={{ width: "100%" }}>
+     <> 
+     <div className='mainContainer'>
+        <div  className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
+          <div className="card p-5 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
             <div className="text-center mb-4">
               <div className="d-inline-flex align-items-center mb-2">
                 <div className="bg-primary text-white rounded p-2 me-2">
@@ -23,15 +50,15 @@ export const Login = ({ onLogin }) => {
               </div>
               <h5 className="text-dark">Login</h5>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <input
                   type="email"
                   className="form-control"
                   placeholder="Email Address"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                 />
               </div>
               <div className="mb-2">
@@ -40,6 +67,8 @@ export const Login = ({ onLogin }) => {
                   className="form-control"
                   placeholder="Password"
                   required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
               </div>
               <div className="mb-3 text-end">
@@ -47,9 +76,9 @@ export const Login = ({ onLogin }) => {
                   Forgot password?
                 </a>
               </div>
-              <Link type="submit" className="btn btn-primary w-100" to="/home">
+              <button className="btn btn-primary w-100" onClick={(handleLogin)}>
                Log in
-              </Link>
+              </button>
             </form>
             <div className="text-center mt-3 small">
               Dont have an account?{" "}
@@ -59,5 +88,7 @@ export const Login = ({ onLogin }) => {
             </div>
           </div>
         </div>
+      </div> 
+    </>
       );
 }
