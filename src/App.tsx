@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import { NavBar } from './components/NavBar';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
@@ -8,11 +8,11 @@ import { Task } from './pages/Task';
 import { FormRegister } from './components/FormRegister';
 import { FormUpdate } from './components/FormUpdate';
 import { Login } from './components/login';
+import { Register } from './components/Register';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-
+ 
 
   return (
     <Router>
@@ -27,6 +27,7 @@ function App() {
                 user ? <Navigate to="/" replace /> : <Login setUser={setUser}/>
               }
             />
+            <Route path='/register' element={<Register/>}/>
 
             {/* Rutas protegidas */}
             {user ? (

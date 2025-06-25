@@ -1,6 +1,10 @@
 import { Table } from '../components/Table'
 
-export const Task = ({info}) => {
+export const Task = ({info}: {
+    url: string;
+    title: 'Tasks' | 'Projects';
+    info: any;
+}) => {
     const urlTask = info.role === "admin" ? ("http://localhost:3000/task-manager") : (`http://localhost:3000/task-manager/developer/${info.id}`)
     const title = "Tasks"
   return (
