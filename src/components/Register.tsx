@@ -2,29 +2,24 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export const Login = ({ setUser }) => {
+export const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  
   
   const navigate = useNavigate()
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try{
-      const response = await axios.post('http://localhost:3000/auth/login',{
+      const response = await axios.post('http://localhost:3000/auth/register',{
+        name,
         email, 
         password
       })
 
-      const token = response.data;
-      localStorage.setItem('token', token);
+      
       navigate('/');
-      // Llamada para obtener perfil
-      const profileRes = await axios.get('http://localhost:3000/auth/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setUser(profileRes.data);
+    
       
     }catch(err){
       console.log(err)
@@ -49,9 +44,19 @@ export const Login = ({ setUser }) => {
                 </div>
                 <h3 className="mb-0 text-primary">TaskManager</h3>
               </div>
-              <h5 className="text-dark">Login</h5>
+              <h5 className="text-dark">Register</h5>
             </div>
             <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Name Completed"
+                  required
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </div>
               <div className="mb-3">
                 <input
                   type="email"
@@ -77,15 +82,16 @@ export const Login = ({ setUser }) => {
                   Forgot password?
                 </a>
               </div>
-              <button className="btn btn-primary w-100" onClick={(handleLogin)}>
-               Log in
+              <button className="btn btn-primary w-100" onClick={(handleRegister)}>
+              Sign Up
               </button>
             </form>
             <div className="text-center mt-3 small">
-              Dont have an account?{" "}
-              <Link to="/register" className="text-primary text-decoration-none">
-                Sign up
+             Have an account?{" "}
+              <Link to="/login" className="text-primary text-decoration-none">
+                Login
               </Link>
+              
             </div>
           </div>
         </div>
