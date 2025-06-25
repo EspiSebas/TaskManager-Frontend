@@ -66,13 +66,13 @@ export const FormRegister = () => {
 
 
   const [form, setForm] = useState(initialForm);
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
     });
   }
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     if (type == "task") {
@@ -104,69 +104,92 @@ export const FormRegister = () => {
 
   }
 
-  const handleReset = (e) => {
+  const handleReset = (e:any) => {
     setForm(initialForm);
   }
 
 
-  return (
-    <div className="mainContainer" >
-      <div className="styleFormRegisterAndLogin">
-        <h3>Add {type}</h3>
+return (
+  <div className="mainContainer">
+    <div className="w-100" style={{ maxWidth: '800px' }}>
+      <div className="p-5 shadow rounded bg-white">
+        <h3 className="text-center mb-4">Add {type.charAt(0).toUpperCase() + type.slice(1)}</h3>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Name:</label><br></br>
-            <input type='text' name='name' placeholder='name' onChange={handleChange} value={form.name} />
+            <label htmlFor="name" className="form-label">Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              placeholder="Enter name"
+              onChange={handleChange}
+              value={form.name}
+              required
+            />
           </div>
-          {
 
-            (type == 'task') ? (
-              <>
-                <div className="mb-3">
-                  <label htmlFor="Description" className="form-label">Description:</label><br></br>
-                  <input type='text' name='description' placeholder='description' onChange={handleChange} value={form.description} />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="text" className="form-label">Project:</label><br></br>
-                  <select className="form-select" value={form.project} onChange={handleChange} name='project'>
-                    {data.map((item) => {
-                      return (
-                        <option key={item.id} value={item.name}>{item.name}</option>
-                      )
-                    })
-                    }
-                  </select>
+          {type === 'task' && (
+            <>
+              <div className="mb-3">
+                <label htmlFor="description" className="form-label">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="description"
+                  placeholder="Enter description"
+                  onChange={handleChange}
+                  value={form.description}
+                  required
+                />
+              </div>
 
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="text" className="form-label">Developer:</label><br></br>
-                  <select className="form-select" value={form.dev} onChange={handleChange} name='dev'>
-                    {dataDev.map((item) => {
-                      return (
-                        <option key={item.id} value={item.name}>{item.name}</option>
-                      )
-                    })
-                    }
-                  </select>
+              <div className="mb-3">
+                <label htmlFor="project" className="form-label">Project</label>
+                <select
+                  className="form-select"
+                  name="project"
+                  value={form.project}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a project</option>
+                  {data.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                </div>
-              </>
-            ) : (
-              <>
-                
+              <div className="mb-3">
+                <label htmlFor="dev" className="form-label">Developer</label>
+                <select
+                  className="form-select"
+                  name="dev"
+                  value={form.dev}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a developer</option>
+                  {dataDev.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
 
-              </>
-            )
-          }
-          
-          
-          <div>
-            <button className='btn btn-primary' type="submit"> Add</button> <br></br><br></br>
-
+          <div className="d-grid">
+            <button type="submit" className="btn btn-primary">
+              ➕ Add {type}
+            </button>
           </div>
         </form>
-
       </div>
     </div>
-  )
+  </div>
+);
 }

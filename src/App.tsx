@@ -32,9 +32,9 @@ function App() {
             {user ? (
               <>
                 <Route path="/" element={<Home />} />
-                <Route path="/project" element={<Projects />} />
+                <Route path="/project" element={<Projects info={user} />} />
                 <Route path="/profile" element={<Profile info={user} setUser={setUser} />} />
-                <Route path="/task" element={<Task />} />
+                <Route path="/task" element={<Task info={user}/>} />
                 <Route path="/formRegister/:type" element={<FormRegister />} />
                 <Route path="/formUpdate/:type" element={<FormUpdate />} />
               </>

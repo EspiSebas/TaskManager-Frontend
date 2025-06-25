@@ -1,12 +1,12 @@
 import { Table } from '../components/Table'
 
-export const Task = () => {
-    const urlTask = "http://localhost:3000/task-manager"
+export const Task = ({info}) => {
+    const urlTask = info.role === "admin" ? ("http://localhost:3000/task-manager") : (`http://localhost:3000/task-manager/developer/${info.id}`)
     const title = "Tasks"
   return (
     
     <div className="ms-md-5 ps-md-5">
-        <Table url={urlTask} title={title}/>
+        <Table url={urlTask} title={title} info={info}/>
     </div>
   )
 }

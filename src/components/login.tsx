@@ -25,6 +25,7 @@ export const Login = ({ setUser }) => {
       });
 
       setUser(profileRes.data);
+      
     }catch(err){
       console.log(err)
       alert('Mistake to log in!!')

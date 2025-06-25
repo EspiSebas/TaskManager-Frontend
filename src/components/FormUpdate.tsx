@@ -11,13 +11,38 @@ const taskForm = {
 
 }
 
+interface Developer {
+  name: string;
+}
+
+interface Project {
+  name: string;
+}
+
+interface Task {
+  id: number;
+  name: string;
+  description: string;
+  state?: string; // opcional si puede faltar
+  status?: string; // para los proyectos
+  dev?: Developer;
+  project?: Project;
+  comment?: string;
+}
+
+
+interface Dev {
+  id: number;
+  name: string;
+}
+
 
 export const FormUpdate = () => {
     const { type } = useParams();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [dataDev, setDataDev] = useState([]);
+    const [dataDev, setDataDev] = useState<Task[]>([]);
     const { state } = useLocation();
     const item = state;
     const navigate = useNavigate()
@@ -37,6 +62,13 @@ export const FormUpdate = () => {
                 setLoading(false);
             });
     }
+
+
+    const states = [
+      'pending',
+      'in_progress',
+      'completed'
+    ]
 
     const callUser = () => {
         fetch("http://localhost:3000/users")
@@ -63,21 +95,26 @@ export const FormUpdate = () => {
         description: item.description || "",
         project: item.project || "",
         dev: item.dev || "",
+        state: item.state || ""
 
     }
 
-    let initialForm = taskForm
+    const projectForm = {
+        name: item.name || "",
+    }
+
+    let initialForm = type === "task" ? taskForm : projectForm;
 
 
 
     const [form, setForm] = useState(initialForm);
-    const handleChange = (e) => {
+    const handleChange = (e:any) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
 
         if (type == "task") {
@@ -87,6 +124,7 @@ export const FormUpdate = () => {
             }
         }
 
+        
         try {
             const response = await axios.patch(`${url}/${item.id}`, form);
             if (response.status === 200) {
@@ -95,73 +133,114 @@ export const FormUpdate = () => {
             }
 
         } catch (error) {
+            console.log(form);
             alert(error);
         }
 
     }
 
-    const handleReset = (e) => {
+    const handleReset = (e:any) => {
         setForm(initialForm);
     }
 
 
     return (
-        <div className="mainContainer" >
-            <div className="styleFormRegisterAndLogin">
-                <h3>Form Update {item.name}</h3>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Name:</label><br></br>
-                        <input type='text' name='name' placeholder='name' onChange={handleChange} value={form.name} />
-                    </div>
-                    {
-                        (type == 'task') ? (
-                            <>
-                                <div className="mb-3">
-                                    <label htmlFor="Description" className="form-label">Description:</label><br></br>
-                                    <input type='text' name='description' placeholder='description' onChange={handleChange} value={form.description} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="text" className="form-label">Project:</label><br></br>
-                                    <select className="form-select" value={form.project} onChange={handleChange} name='project'>
-                                        {data.map((item) => {
-                                            return (
-                                                <option key={item.id} value={item.name}>{item.name}</option>
-                                            )
-                                        })
-                                        }
-                                    </select>
+  <div className="mainContainer">
+    <div className="w-100" style={{ maxWidth: '800px' }}>
+      <div className="p-5 shadow rounded bg-white">
+        <h3 className="text-center mb-4">Update {item.name}</h3>
 
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="text" className="form-label">Developer:</label><br></br>
-                                    <select className="form-select" value={form.dev} onChange={handleChange} name='dev'>
-                                        {dataDev.map((item) => {
-                                            return (
-                                                <option key={item.id} value={item.name}>{item.name}</option>
-                                            )
-                                        })
-                                        }
-                                    </select>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              placeholder="Enter name"
+              onChange={handleChange}
+              value={form.name}
+              required
+            />
+          </div>
+          <div className="mb-3">
+                <label htmlFor="project" className="form-label">State</label>
+                <select
+                  className="form-select"
+                  name="state"
+                  value={form.state}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select state</option>
+                  {states.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+          {type === 'task' && (
+            <>
+              <div className="mb-3">
+                <label htmlFor="description" className="form-label">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="description"
+                  placeholder="Enter description"
+                  onChange={handleChange}
+                  value={form.description}
+                  required
+                />
+              </div>
 
-                                </div>
-                            </>
-                        ) : (
-                            <>
+              <div className="mb-3">
+                <label htmlFor="project" className="form-label">Project</label>
+                <select
+                  className="form-select"
+                  name="project"
+                  value={form.project}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a project</option>
+                  {data.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="dev" className="form-label">Developer</label>
+                <select
+                  className="form-select"
+                  name="dev"
+                  value={form.dev}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a developer</option>
+                  {dataDev.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
 
+          <div className="d-grid">
+            <button className="btn btn-success" type="submit">
+              💾 Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+);
 
-                            </>
-                        )
-                    }
-
-
-                    <div>
-                        <button className='btn btn-primary' type="submit"> Add</button> <br></br><br></br>
-
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    )
 }
